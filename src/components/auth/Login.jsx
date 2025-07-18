@@ -4,7 +4,7 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import api from "../../utils/axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner"
 import { RadioGroup } from '../ui/radio-group'
@@ -33,12 +33,7 @@ const Login = () => {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
-            const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                withCredentials: true,
-            });
+            const res = await api.post(`${USER_API_END_POINT}/login`, input);
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
                 navigate("/");
