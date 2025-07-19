@@ -20,6 +20,7 @@ const Jobs = () => {
         const fetchAllJobs = async () => {
             try {
                 console.log("Jobs component - fetching all jobs initially");
+                console.log("API endpoint:", `${JOB_API_END_POINT}/get`);
                 const res = await axios.get(`${JOB_API_END_POINT}/get`, {withCredentials:true});
                 if(res.data.success){
                     console.log("Jobs component - all jobs received:", res.data.jobs.length);

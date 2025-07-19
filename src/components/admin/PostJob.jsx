@@ -29,6 +29,10 @@ const PostJob = () => {
     const navigate = useNavigate();
 
     const { companies } = useSelector(store => store.company);
+    const { user } = useSelector(store => store.auth);
+    
+    console.log("PostJob component - User:", user);
+    console.log("PostJob component - Companies:", companies);
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -51,6 +55,7 @@ const PostJob = () => {
         try {
             setLoading(true);
             console.log("Submitting job data:", input);
+            console.log("API endpoint:", `${JOB_API_END_POINT}/post`);
             
             const res = await axios.post(`${JOB_API_END_POINT}/post`, input,{
                 headers:{
