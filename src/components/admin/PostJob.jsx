@@ -63,6 +63,7 @@ const PostJob = () => {
                 navigate("/admin/jobs");
             }
         } catch (error) {
+            setLoading(false); // Ensure loading is reset on error
             console.log("Error posting job:", error);
             if (error.response && error.response.data && error.response.data.message) {
                 toast.error(error.response.data.message);
@@ -71,6 +72,7 @@ const PostJob = () => {
             } else {
                 toast.error("An error occurred while posting the job");
             }
+            return;
         } finally{
             setLoading(false);
         }
