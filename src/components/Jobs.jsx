@@ -5,7 +5,7 @@ import Job from './Job'
 import { useSelector, useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
-import axios from 'axios'
+import api from '../utils/axios'
 import { JOB_API_END_POINT } from '../utils/constant'
 import { setAllJobs, setSearchedQuery } from '@/redux/jobSlice'
 import { Button } from './ui/button'
@@ -21,7 +21,7 @@ const Jobs = () => {
             try {
                 console.log("Jobs component - fetching all jobs initially");
                 console.log("API endpoint:", `${JOB_API_END_POINT}/get`);
-                const res = await axios.get(`${JOB_API_END_POINT}/get`, {withCredentials:true});
+                const res = await api.get(`${JOB_API_END_POINT}/get`);
                 if(res.data.success){
                     console.log("Jobs component - all jobs received:", res.data.jobs.length);
                     dispatch(setAllJobs(res.data.jobs));

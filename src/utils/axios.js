@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: 'https://jobhunt-backend-9fyv.onrender.com',
+  baseURL: 'https://jobhunt-backend-vjd5.onrender.com',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

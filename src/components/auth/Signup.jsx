@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { toast } from 'sonner'
 import { Link, useNavigate } from "react-router-dom"
 import { RadioGroup } from '../ui/radio-group'
-import axios from "axios";
+import api from "../../utils/axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import store from '../../redux/store'
 import { Loader2 } from 'lucide-react'
@@ -48,12 +48,7 @@ const Signup = () => {
         }
         try {
             dispatch(setLoading(true));
-            const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-                withCredentials: true,
-            });
+            const res = await api.post(`${USER_API_END_POINT}/register`, formData);
             if (res.data.success) {
                 navigate("/login");
                 toast.success(res.data.message);
