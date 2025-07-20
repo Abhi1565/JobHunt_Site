@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: 'https://jobhunt-backend-csnc.onrender.com',
+  baseURL: 'https://jobhunt-backend-lt5m.onrender.com',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -49,6 +49,13 @@ api.interceptors.request.use(
   (config) => {
     // Add any common headers here if needed
     console.log('Making request to:', config.url);
+    
+    // Add Authorization header if token exists in localStorage
+    const token = localStorage.getItem('authToken');
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
     return config;
   },
   (error) => {

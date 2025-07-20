@@ -36,6 +36,12 @@ const Login = () => {
             const res = await api.post(`${USER_API_END_POINT}/login`, input);
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
+                
+                // Store token in localStorage as fallback
+                if (res.data.token) {
+                    localStorage.setItem('authToken', res.data.token);
+                }
+                
                 navigate("/");
                 toast.success(res.data.message);
             }
