@@ -12,10 +12,34 @@ const api = axios.create({
 // Function to check if user is authenticated
 export const checkAuthStatus = async () => {
   try {
+    console.log('Checking auth status...');
     const response = await api.get('/api/v1/user/me');
+    console.log('Auth check response:', response.data);
     return response.data.success;
   } catch (error) {
-    console.log('Auth check failed:', error.response?.data || error.message);
+    console.log('Auth check failed:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+      config: {
+        url: error.config?.url,
+        withCredentials: error.config?.withCredentials,
+        headers: error.config?.headers
+      }
+    });
+    return false;
+  }
+};
+
+// Alternative auth check using a different endpoint
+export const checkAuthAlternative = async () => {
+  try {
+    console.log('Alternative auth check...');
+    const response = await api.get('/api/v1/job/test-auth');
+    console.log('Alternative auth check response:', response.data);
+    return response.data.success;
+  } catch (error) {
+    console.log('Alternative auth check failed:', error.response?.data || error.message);
     return false;
   }
 };

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AdminJobsTable from './AdminJobsTable'
 import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs'
 import { setSearchJobByText } from '@/redux/jobSlice'
-import { checkAuthStatus } from '@/utils/axios'
+import api, { checkAuthStatus, checkAuthAlternative } from '@/utils/axios'
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
@@ -24,9 +24,22 @@ const AdminJobs = () => {
   useEffect(() => {
     // Check authentication status on component mount
     const checkAuth = async () => {
-      const isAuth = await checkAuthStatus();
-      setAuthStatus(isAuth);
-      console.log('Auth status check:', isAuth);
+      try {
+        // First test if backend is accessible
+        console.log('Testing backend connectivity...');
+        const testResponse = await api.get('/');
+        console.log('Backend test response:', testResponse.data);
+        
+        // Then check authentication with both methods
+        const isAuth = await checkAuthStatus();
+        const isAuthAlt = await checkAuthAlternative();
+        console.log('Auth status check (primary):', isAuth);
+        console.log('Auth status check (alternative):', isAuthAlt);
+        setAuthStatus(isAuth || isAuthAlt);
+      } catch (error) {
+        console.log('Error during auth check:', error);
+        setAuthStatus(false);
+      }
     };
     checkAuth();
   }, []);
@@ -40,6 +53,18 @@ const AdminJobs = () => {
           <h3 className='font-bold'>Debug Info:</h3>
           <p>User: {user ? `${user.fullname} (${user.role})` : 'Not logged in'}</p>
           <p>Auth Status: {authStatus === null ? 'Checking...' : authStatus ? 'Authenticated' : 'Not authenticated'}</p>
+          <Button 
+            onClick={async () => {
+              console.log('Manual auth test...');
+              const isAuth = await checkAuthStatus();
+              const isAuthAlt = await checkAuthAlternative();
+              console.log('Manual auth results:', { isAuth, isAuthAlt });
+              setAuthStatus(isAuth || isAuthAlt);
+            }}
+            className="mt-2"
+          >
+            Test Auth Again
+          </Button>
         </div>
         
         <div className='flex items-center justify-between my-5'>
