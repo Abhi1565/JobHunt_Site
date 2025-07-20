@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
 import api from '../utils/axios'
 import { JOB_API_END_POINT } from '../utils/constant'
-import { setAllJobs, setSearchedQuery } from '@/redux/jobSlice'
+import { setAllJobs, setSearchedQuery, setOriginalJobs } from '@/redux/jobSlice'
 import { Button } from './ui/button'
 
 const Jobs = () => {
@@ -19,15 +19,13 @@ const Jobs = () => {
     useEffect(() => {
         const fetchAllJobs = async () => {
             try {
-                console.log("Jobs component - fetching all jobs initially");
-                console.log("API endpoint:", `${JOB_API_END_POINT}/get`);
                 const res = await api.get(`${JOB_API_END_POINT}/get`);
                 if(res.data.success){
-                    console.log("Jobs component - all jobs received:", res.data.jobs.length);
                     dispatch(setAllJobs(res.data.jobs));
+                    dispatch(setOriginalJobs(res.data.jobs)); // Store original jobs
                 }
             } catch (error) {
-                console.log("Error fetching all jobs:", error);
+                // Handle error silently
             }
         };
         
@@ -58,9 +56,6 @@ const Jobs = () => {
 
     // Update filtered jobs when allJobs or searchedQuery changes
     useEffect(()=>{
-        console.log("Jobs component - searchedQuery:", searchedQuery);
-        console.log("Jobs component - allJobs count:", allJobs.length);
-        
         // Jobs page only uses sidebar filters, not search query from Redux
         // If there's a searchedQuery from sidebar filter, filter the jobs
         if(searchedQuery && searchedQuery.trim() !== ""){
@@ -70,7 +65,6 @@ const Jobs = () => {
                     return isSalaryInRange(job.salary, searchedQuery);
                 }) || [];
                 setFilterJobs(filteredJobs);
-                console.log("Salary filtered jobs count:", filteredJobs.length);
             } else {
                 // For text searches (location, industry), filter client-side
                 const filteredJobs = allJobs?.filter((job) => {
@@ -83,7 +77,6 @@ const Jobs = () => {
                     );
                 }) || [];
                 setFilterJobs(filteredJobs);
-                console.log("Text filtered jobs count:", filteredJobs.length);
             }
         } else {
             // No search query, show all jobs

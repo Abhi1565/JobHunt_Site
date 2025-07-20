@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Job from './Job';
 import Navbar from './shared/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchedQuery, setAllJobs } from '@/redux/jobSlice';
+import { setSearchedQuery, setFilteredJobs } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
@@ -10,24 +10,14 @@ import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 
 const Browse = () => {
-  const {allJobs, searchedQuery} = useSelector(store=>store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs || []);
+  const {filteredJobs, searchedQuery, allJobs} = useSelector(store=>store.job);
   const dispatch = useDispatch();
 
   // Call the hook to fetch jobs based on search query from home page
   useGetAllJobs();
 
-  // Update filtered jobs when allJobs or searchedQuery changes
-  useEffect(()=>{
-    // Browse page only shows jobs when there's a search query
-    if (searchedQuery && searchedQuery.trim() !== "") {
-        // The backend already filtered the jobs based on title and description
-        setFilterJobs(allJobs || []);
-    } else {
-        // No search query, don't show any jobs on browse page
-        setFilterJobs([]);
-    }
-  },[allJobs, searchedQuery]);
+  // Determine which jobs to show
+  const jobsToShow = searchedQuery ? (filteredJobs || []) : (allJobs || []);
 
   return (
     <div>
@@ -35,12 +25,12 @@ const Browse = () => {
         <div className='mx-auto my-10 max-w-7xl px-4'>
            <div className='mb-6'>
              <h1 className='text-2xl font-bold text-gray-900 mb-2'>
-               {searchedQuery ? `Search Results for "${searchedQuery}"` : 'Search Jobs'}
+               {searchedQuery ? `Search Results for "${searchedQuery}"` : 'Browse All Jobs'}
              </h1>
              <p className='text-gray-600'>
                {searchedQuery 
-                 ? `Found ${filterJobs.length} job${filterJobs.length !== 1 ? 's' : ''}`
-                 : 'Search for jobs using the search bar on the home page'
+                 ? `Found ${filteredJobs?.length || 0} job${(filteredJobs?.length || 0) !== 1 ? 's' : ''}`
+                 : `Showing ${allJobs?.length || 0} available job${(allJobs?.length || 0) !== 1 ? 's' : ''}`
                }
              </p>
            </div>
@@ -66,7 +56,7 @@ const Browse = () => {
              </div>
            )}
            
-           {filterJobs.length <= 0 ? (
+           {jobsToShow.length <= 0 ? (
              <div className='text-center py-12'>
                <Search className='w-12 h-12 text-gray-400 mx-auto mb-4' />
                <h3 className='text-lg font-medium text-gray-900 mb-2'>
@@ -94,7 +84,7 @@ const Browse = () => {
              </div>
            ) : (
              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-               {filterJobs.map((job) => (
+               {jobsToShow.map((job) => (
                  <motion.div 
                    initial={{opacity:0, y:20}}
                    animate={{opacity:1, y:0}}
