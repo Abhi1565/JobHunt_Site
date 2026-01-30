@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: 'https://jobhunt-backend-2swi.onrender.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -19,32 +19,27 @@ export const checkAuthStatus = async () => {
   }
 };
 
-// Request interceptor to add common headers
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Add Authorization header if token exists in localStorage
     const token = localStorage.getItem('authToken');
     if (token && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle common errors
+// Response interceptor
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access silently
+      // optional: logout or redirect
     }
     return Promise.reject(error);
   }
 );
 
-export default api; 
+export default api;
