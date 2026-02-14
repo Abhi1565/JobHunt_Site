@@ -5,7 +5,7 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useSelector } from 'react-redux'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import axios from 'axios'
+import api from '../../utils/axios';
 import { JOB_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -136,7 +136,7 @@ const PostJob = () => {
             const payload = { ...input, requirements: parsedSkills };
             console.log("Submitting job data:", payload);
             
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, payload,{
+            const res = await api.post(`${JOB_API_END_POINT}/post`, payload,{
                 headers:{
                     'Content-Type':'application/json'
                 },

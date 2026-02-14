@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Loader2 } from 'lucide-react'
 import { JOB_TYPE_OPTIONS, LOCATION_TYPE_OPTIONS } from '@/utils/jobFilters'
-import axios from 'axios'
+import api from '../../utils/axios';
 import { JOB_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -98,7 +98,7 @@ const EditJob = () => {
 
     const fetchJobById = async () => {
         try {
-            const res = await axios.get(`${JOB_API_END_POINT}/getadmin/${id}`, { withCredentials: true });
+            const res = await api.get(`${JOB_API_END_POINT}/getadmin/${id}`, { withCredentials: true });
             if (res.data.success) {
                 const job = res.data.job;
                 const applicantsExist = (job?.applications?.length || 0) > 0;
@@ -193,7 +193,7 @@ const EditJob = () => {
 
         try {
             setLoading(true);
-            const res = await axios.put(`${JOB_API_END_POINT}/update/${id}`, payload, {
+            const res = await api.put(`${JOB_API_END_POINT}/update/${id}`, payload, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

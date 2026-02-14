@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react'
 import { DialogFooter } from './ui/dialog'
 import { useSelector, useDispatch } from 'react-redux'
 import { USER_API_END_POINT } from '../utils/constant'
-import axios from 'axios'
+import api from '../utils/axios'
 import { setUser } from '@/redux/authSlice'
 import { toast } from 'sonner'
 
@@ -60,7 +60,7 @@ const UpdateProfileDialog = ({open, setOpen}) => {
    
         try {
            setLoading(true); 
-           const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData,{
+           const res = await api.post(`${USER_API_END_POINT}/profile/update`, formData,{
              headers:{
                 'Content-Type':'multipart/form-data'
              },
