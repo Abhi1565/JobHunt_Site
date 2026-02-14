@@ -84,7 +84,7 @@ const ApplicantsTable = ({ refreshApplicants }) => {
                 meetingLink: scheduleInput.meetingLink,
                 notes: scheduleInput.notes
             };
-            const res = await axios.post(`${APPLICATION_API_END_POINT}/status/${selectedApplication._id}/update`, payload);
+            const res = await api.post(`${APPLICATION_API_END_POINT}/status/${selectedApplication._id}/update`, payload);
             if (res.data.success) {
                 toast.success(res.data.message);
                 setScheduleOpen(false);
