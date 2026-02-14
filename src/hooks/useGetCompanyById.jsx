@@ -1,7 +1,7 @@
 import { setSingleCompany } from '@/redux/companySlice'
 import { setAllJobs } from '@/redux/jobSlice'
 import { COMPANY_API_END_POINT, JOB_API_END_POINT } from '@/utils/constant'
-import axios from 'axios'
+import api from "./../utils/axios";
 import { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -16,7 +16,7 @@ const useGetCompanyById = (companyId) => {
             lastCompanyId.current = companyId;
             
             try {
-                const res = await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`,{withCredentials:true});
+                const res = await api.get(`${COMPANY_API_END_POINT}/get/${companyId}`,{withCredentials:true});
                 if(res.data.success){
                     dispatch(setSingleCompany(res.data.company));
                 }

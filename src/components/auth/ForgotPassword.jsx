@@ -4,7 +4,7 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import api from "../../utils/axios";
 import { USER_API_END_POINT } from "../../utils/constant"
 import { toast } from "sonner"
 import { Eye, EyeOff } from 'lucide-react'
@@ -28,7 +28,7 @@ const ForgotPassword = () => {
         }
         try {
             setLoading(true)
-            const res = await axios.post(`${USER_API_END_POINT}/forgot-password`, { email })
+            const res = await api.post(`${USER_API_END_POINT}/forgot-password`, { email })
             if (res.data.success) {
                 toast.success(res.data.message)
                 setStep("reset")

@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { toast } from 'sonner'
 import { Link, useNavigate } from "react-router-dom"
 import { RadioGroup } from '../ui/radio-group'
-import axios from "axios";
+import api from "../../utils/axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import store from '../../redux/store'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
@@ -95,7 +95,7 @@ const Signup = () => {
         const timer = setTimeout(async () => {
             setEmailStatus({ checking: true, exists: false, message: "Checking email..." });
             try {
-                const res = await axios.get(`${USER_API_END_POINT}/check-email`, {
+                const res = await api.get(`${USER_API_END_POINT}/check-email`, {
                     params: { email }
                 });
                 if (res.data.exists) {
