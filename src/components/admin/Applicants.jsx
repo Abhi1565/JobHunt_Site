@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import React, { useCallback, useEffect } from 'react'
 import Navbar from '../shared/Navbar'
 import ApplicantsTable from './ApplicantsTable'
 import axios from 'axios';
+=======
+import React, { useEffect } from 'react'
+import Navbar from '../shared/Navbar'
+import ApplicantsTable from './ApplicantsTable'
+import api from '@/utils/axios';
+>>>>>>> 08e2601fbfa0cc52cb5faeea23769568645c26e4
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

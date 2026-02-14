@@ -17,6 +17,7 @@ const AdminJobs = () => {
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [input]);
+
   return (
     <div>
       <Navbar />
